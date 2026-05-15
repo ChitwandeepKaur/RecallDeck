@@ -1,0 +1,24 @@
+Phase 2b: Dashboard Persistence and Sample Deck
+
+In this sub-phase, we updated the Dashboard to read from our local storage instead of showing a static placeholder, and we wired up the "Load Sample Deck" button.
+
+Here is the line-by-line explanation of the files added/modified:
+
+### src/pages/Dashboard.tsx
+- `import React, { useEffect, useState } from 'react';`: We imported React hooks to manage our deck state and load data when the component mounts.
+- `import { Plus, BookOpen, Clock, Layers } from 'lucide-react';`: Imported icons for the UI.
+- `import { getDecks, loadSampleDeck } from '../lib/storage';`: Imported our storage helpers.
+- `import { Deck } from '../types';`: Imported the Deck type for TypeScript.
+- `const [decks, setDecks] = useState<Deck[]>([]);`: Created a state variable to hold our array of decks. It starts empty.
+- `useEffect(() => { setDecks(getDecks()); }, []);`: When the Dashboard first loads (empty dependency array `[]`), it fetches the saved decks from localStorage and updates the state.
+- `const handleLoadSample = () => { ... }`: An event handler for the sample deck button.
+- `const sample = loadSampleDeck();`: Generates and saves the sample deck.
+- `setDecks([...decks, sample]);`: Adds the new sample deck to our current state so the screen updates immediately without a page refresh.
+- `{decks.length === 0 ? ( ... ) : ( ... )}`: A conditional rendering block. If there are no decks, show the empty state. Otherwise, show the grid of decks.
+- `<button onClick={handleLoadSample} ...>`: The button that triggers the sample deck creation.
+- `<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">`: Creates a responsive CSS grid that shows 1 column on mobile, 2 on tablets, and 3 on large screens.
+- `{decks.map((deck) => ( ... ))}`: Loops over each deck in the array and generates a UI card for it.
+- `<h3 className="... line-clamp-2">{deck.title}</h3>`: Displays the deck's title, limiting it to 2 lines if it's too long.
+- `<span className="...">{deck.cards.length} cards</span>`: Shows the total number of cards in the deck.
+- `{deck.stats.lastStudiedAt ? ... : 'Never studied'}`: Checks if the deck has a `lastStudiedAt` timestamp. If it does, formats it to a readable date; otherwise, says "Never studied".
+- `<Link to={.../study} ...>` and `<Link to={...} ...>`: Generates the "Study" and "View" buttons for that specific deck using its unique ID.
