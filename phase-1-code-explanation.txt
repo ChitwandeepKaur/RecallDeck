@@ -1,0 +1,62 @@
+Phase 1: Project setup and basic UI shell
+
+In this phase, we initialized the project using Vite, React, TypeScript, and Tailwind CSS. We also set up the foundational routing and created placeholder pages.
+
+Here is the line-by-line explanation of the core files we modified:
+
+### vite.config.ts
+This file configures Vite, our build tool.
+- `import { defineConfig } from 'vite'`: Imports the helper function to define the configuration.
+- `import react from '@vitejs/plugin-react'`: Imports the official React plugin for Vite.
+- `import tailwindcss from '@tailwindcss/vite'`: Imports the Tailwind CSS plugin to process our styles.
+- `export default defineConfig({ ... })`: Exports the final configuration object.
+- `plugins: [react(), tailwindcss()]`: Tells Vite to use the React and Tailwind plugins during the build process.
+
+### src/index.css
+This is the main stylesheet for our application.
+- `@import "tailwindcss";`: Instructs Tailwind CSS v4 to inject all its utility classes and core styles here.
+- `@import url('https://fonts.googleapis.com/css2?...');`: Fetches the "Inter" font from Google Fonts.
+- `@theme { ... }`: A Tailwind v4 directive to define our custom design tokens (colors, fonts).
+- `--font-sans: 'Inter', system-ui, sans-serif;`: Sets our primary font family.
+- `--color-primary-50` through `--color-primary-600`: Defines our custom green color palette for buttons and accents.
+- `@layer base { ... }`: Customizes base HTML elements.
+- `body { @apply bg-slate-50 text-slate-900 font-sans antialiased; }`: Applies default background color, text color, and font settings to the whole app.
+- `@layer components { ... }`: Defines reusable component classes.
+- `.btn-primary { @apply ... }`: A custom class for primary action buttons with hover and click animations.
+- `.card-base { @apply ... }`: A custom class for consistent, rounded, shadowed cards across the app.
+
+### src/App.tsx
+This file is the entry point for our UI, setting up the routes.
+- `import { BrowserRouter, Routes, Route } from 'react-router-dom';`: Imports routing components to manage navigation without reloading the page.
+- `export default function App() { ... }`: The main component of our application.
+- `<BrowserRouter>`: Wraps our app to enable routing based on the browser's URL.
+- `<Route path="/" element={<Layout />}>`: The main route that wraps all pages inside our `Layout` component.
+- `<Route index element={<Dashboard />} />`: The default page shown when visiting `/`.
+- `<Route path="import" element={<ImportDeck />} />`: Shows the Import placeholder when visiting `/import`.
+- `<Route path="deck/:deckId" ... />`: Dynamic routes for viewing, editing, and studying a specific deck (where `:deckId` is a placeholder for the real ID).
+
+### src/components/Layout.tsx
+This file defines the common shell (header and main content area) around all our pages.
+- `import { Link, Outlet } from 'react-router-dom';`: `Link` is used for navigation, `Outlet` is where nested routes will render their content.
+- `<header ...>`: Creates a sticky top navigation bar.
+- `<Link to="/">...RecallDeck</Link>`: The app logo that takes you back to the Dashboard.
+- `<main ...><Outlet /></main>`: The central area where the current page's component (like Dashboard or ImportDeck) is actually displayed.
+
+### src/pages/Dashboard.tsx
+The placeholder for the home page.
+- `import { Link } from 'react-router-dom';`: Used to create an "Import Deck" button that navigates.
+- `<h1>Your Decks</h1>`: The main title of the page.
+- `<div className="bg-white p-12...">`: An empty state container showing a message when there are no decks.
+
+### src/pages/ImportDeck.tsx
+- `export function ImportDeck() { ... }`: A placeholder component showing where users will paste their raw text to create a deck.
+
+### src/pages/DeckDetail.tsx
+- `const { deckId } = useParams();`: Extracts the `deckId` from the URL to display which deck we are looking at.
+- Includes buttons to navigate to the Edit and Study pages.
+
+### src/pages/EditDeck.tsx
+- Placeholder for the screen where users can manually edit flashcards.
+
+### src/pages/StudyDeck.tsx
+- Placeholder for the distraction-free study mode.
